@@ -1,9 +1,10 @@
 // ==UserScript==
-// @name     趁热吃屎2
-// @description nothing
-// @version  1
-// @grant    none
-// @match *://*.zhihu.com/*
+// @name        知乎-趁热吃屎
+// @description 帮助您吃到蓝色低端论坛最新鲜的阴沟耗子窖藏老屎
+// @version     1
+// @grant       none
+// @match       *://*.zhihu.com/*
+// @icon        https://www.google.com/s2/favicons?sz=64&domain=zhihu.com
 // ==/UserScript==
 const nowTime = Date.now()
 const questionCreatedNode = document.querySelector(".QuestionPage > meta[itemprop='dateCreated']");
