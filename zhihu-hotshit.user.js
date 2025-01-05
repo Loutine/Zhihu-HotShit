@@ -8,10 +8,9 @@
 // ==/UserScript==
 const nowTime = Date.now()
 const questionCreatedNode = document.querySelector(".QuestionPage > meta[itemprop='dateCreated']");
-const WARNING_HTML = (x)=>`<div class="QuestionStatus"><div class="QuestionStatus-bar"><div class="QuestionStatus-bar-inner" style="background-color:red;"><strong>这个问题是${x}前提问的！</strong><em>提问内容可能已过时或不适用于当下</em><div class="ztext" style="color:white;">转发时请注意自己别火星了</div></div></div><div><span style="position: absolute; top: -10000px; left: -10000px;" role="log" aria-live="assertive"></span></div><div><span style="position: absolute; top: -10000px; left: -10000px;" role="log" aria-live="assertive"></span></div></div>`
-const ANSWER_FIRST_TIME_WARNING = (x)=>`该回答于提问后<strong>${x}</strong>后首次作答`
-const ANSWER_LAST_TIME_MODIFY = (x)=>`最后一次修改该回答距今<strong>${x}</strong>`
-
+const WARNING_HTML = (x)=>`<div class="QuestionStatus"><div class="QuestionStatus-bar"><div class="QuestionStatus-bar-inner" style="background-color:red;"><strong>这个问题是<u>${x}</u>前提问的！</strong><em>提问内容可能已过时或不适用于当下</em><div class="ztext" style="color:white;">转发时请注意自己别火星了</div></div></div><div><span style="position: absolute; top: -10000px; left: -10000px;" role="log" aria-live="assertive"></span></div><div><span style="position: absolute; top: -10000px; left: -10000px;" role="log" aria-live="assertive"></span></div></div>`
+const ANSWER_LAST_TIME_MODIFY = (x)=>`最后一次修改该回答距今<strong><u>${x}</u></strong>`
+const ANSWER_CREATED = (x)=>`本回答于<strong><u>${x}</u></strong>前创建`
 function answerAddTag (listOfAnswers) {
     for (let nodes of listOfAnswers) {
         let firstTimeNode = nodes.querySelector("meta[itemprop='dateCreated']")
@@ -36,24 +35,17 @@ function answerAddTag (listOfAnswers) {
             let portionAns = deltaAns / questionLiveTime
             let portionMod = deltaMod / questionLiveTime
 
-            if (deltaAns < 1000*60*5) {
+            if (deltaAns < 1000*60*10) {
                 let div = document.createElement('div')
                 div.style.color = "white"
                 div.style.background = "black"
-                div.innerHTML = "首次回答时间距问题提出时间不足5分钟，请注意甄别"
+                div.innerHTML = "首次回答时间距问题提出时间不足10分钟，请注意甄别"
                 parentNode.prepend(div)
             } else {
-                parentNode.prepend(createAnswerStatusTag(`${smartDate(deltaAns, true)}`, portionAns, ANSWER_FIRST_TIME_WARNING))
-            }
-
-            if (answerCreatedTime.getTime() != lastModifyTime.getTime()){
-                let delta = lastModifyTime - questionCreatedTime
-                let portion = delta / questionLiveTime
-
-                parentNode.prepend(
-                    createAnswerStatusTag(`${smartDate(nowTime - lastModifyTime, true)}`,
-                                          portion,
-                                          ANSWER_LAST_TIME_MODIFY))
+                parentNode.prepend(createAnswerStatusTag(`${smartDate(nowTime - answerCreatedTime, true)}`, portionAns, ANSWER_CREATED))
+		if (answerCreatedTime.getTime() != lastModifyTime.getTime()){
+                    parentNode.prepend(createAnswerStatusTag(`${smartDate(nowTime - lastModifyTime, true)}`, portionMod, ANSWER_LAST_TIME_MODIFY))
+		}
             }
         } else {
             let span = document.createElement('span')
