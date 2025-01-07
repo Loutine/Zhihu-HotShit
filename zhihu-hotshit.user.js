@@ -13,6 +13,24 @@ const WARNING_HTML = (x)=>`<div class="QuestionStatus"><div class="QuestionStatu
 const create_time_tag = (x, y)=>`<div class="time">${y}:${x}</div>`
 const create_arrow_tag = (x) => `<div class="arrow"><div class="column"><div class="up">${x}前</div><div class="down"></div></div><div class="arrowhead">▶</div></div>`
 
+// GM_addStyle has been removed from Greasemonkey 4.0.
+// Polyfill here.
+// https://wiki.greasespot.net/GM_addStyle
+if(typeof GM_addStyle === "undefined"){
+  globalThis.GM_addStyle = function (aCss) {
+    'use strict';
+    let head = document.getElementsByTagName('head')[0];
+    if (head) {
+      let style = document.createElement('style');
+      style.setAttribute('type', 'text/css');
+      style.textContent = aCss;
+      head.appendChild(style);
+      return style;
+    }
+    return null;
+  };
+}
+
 GM_addStyle(`.flowchart {
     height: 3 em;
     display: flex;
