@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        知乎-趁热吃屎2
+// @name        知乎-趁热吃屎
 // @description 帮助您吃到蓝色低端论坛最新鲜的阴沟耗子窖藏老屎
 // @version     1
 // @grant       GM_addStyle
