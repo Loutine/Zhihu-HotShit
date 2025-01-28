@@ -239,7 +239,6 @@ function feedFreshness(time) {
 
 function feedFreshnessRemove(time) {
     let day = 1000 * 60 * 60 * 24
-    console.log(time)
     switch(true) {
         case(time > 365 * day ):
             return true
