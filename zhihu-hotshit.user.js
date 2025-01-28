@@ -123,6 +123,11 @@ function answerAddTag (listOfAnswers) {
                 parentNode.prepend(result)
             }
         } else {
+            if ( feedFreshnessRemove(NOW - lastModifyTime)) {
+                parentNode.closest('.TopstoryItem').style.display = 'none'
+                continue
+            }
+
             let span = document.createElement('span')
             span.style.background = "cyan"
             span.innerHTML = "最新" + feedFreshness(NOW - lastModifyTime)+ "<br>原帖" + feedFreshness(NOW - answerCreatedTime) + "<br>"
@@ -228,6 +233,29 @@ function feedFreshness(time) {
             return "🌷🌷🌷"
         default:
             return ""
+    }
+}
+
+
+function feedFreshnessRemove(time) {
+    let day = 1000 * 60 * 60 * 24
+    switch(true) {
+        case(time > 365 * day ):
+            return true
+        case(time > 6 * 30 * day):
+            return true
+        case(time > 3 * 30 * day):
+            return true
+        case(time > 30 * day):
+            return true
+        case(time > 7 * day):
+            return true
+        case(time > day):
+            return false
+        case(time <= day):
+            return false
+        default:
+            return false
     }
 }
 const callback = (mutationList, observer) => {
